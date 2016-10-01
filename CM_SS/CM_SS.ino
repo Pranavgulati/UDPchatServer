@@ -11,17 +11,15 @@
 #define NUM_MAX_CLIENT 4 
 #define CLIENT_PORT 4444	  // port to send UDP packets to clients
 #define SERVER_PORT 8888      // local port to listen for UDP packets
-#define SEPARATORbeg "<"
-#define SEPARATORend ">"
+#define SEPARATORbeg "."
+#define SEPARATORend "."
 /*
 	format for chat string
-	<name>message
+	.name.message
 */
-int status = WL_IDLE_STATUS;
+
 const char* serverSSID = "myServer";			//  your network SSID (name)
 const char* password = "passphrase";       // your network password
-
-// A UDP instance to let us send and receive packets over UDP
 WiFiUDP Udp;
 byte clientCount = 0;
 
@@ -99,19 +97,16 @@ void printClientNames(){
 void setup(){
 	
 	Serial.setDebugOutput(true);
+	Serial.begin(115200);
 	printWifiStatus();
 	Serial.print("Udp server started at port ");
 	Serial.println(SERVER_PORT);
 	Serial.print("begin =");
 	Serial.println(Udp.begin(SERVER_PORT));
 
-
-	// Open serial communications and wait for port to open:
-	Serial.begin(115200);
 	WiFi.mode(WIFI_AP);
-	WiFi.softAP(serverSSID, password,11 );
+	WiFi.softAP(serverSSID, password,11);
 	delay(1000);
-
 
 }
 
@@ -137,7 +132,6 @@ void loop(){
 			strcpy(inBuffer, temp.c_str());
 			if (isClientList(inputName)){
 				Serial.print(inputName);
-				Serial.print(":");
 				Serial.println(inBuffer);
 			}
 			else{
