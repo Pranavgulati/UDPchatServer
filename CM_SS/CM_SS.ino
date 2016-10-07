@@ -5,14 +5,19 @@
 */
 
 
+
 #include <ESP8266WiFi.h>
 #include <WiFiUDP.h>
+#include <EEPROM.h>
+
+
 #define DEBUG 1
 #define NUM_MAX_CLIENT 4 
 #define CLIENT_PORT 4444	  // port to send UDP packets to clients
 #define SERVER_PORT 8888      // local port to listen for UDP packets
-#define SEPARATORbeg "."
-#define SEPARATORend "."
+#define SEPARATORbeg '.'
+#define SEPARATORend '>'
+#define SIGN 20
 /*
 	format for chat string
 	.name.message
@@ -32,7 +37,7 @@ void printWifiStatus() {
 	// print the SSID of the network you're attached to:
 	// print your WiFi shield's IP address:
 	IPAddress ip = WiFi.softAPIP();
-	Serial.print("IP Address: ");
+	Serial.print("\n\nIP Address: ");
 	Serial.println(ip);
 }
 
@@ -49,13 +54,32 @@ byte isClientList(String name){
 	}
 	return 0;
 }
+void debuggerInit(){
+	
+	//error checking and self diagnosis code do not alter
+	EEPROM.begin(64);
+	if (EEPROM.read(SIGN) != 0x22){
+		EEPROM.write(SIGN, 0x22);
+		EEPROM.write(SIGN + 1, 40);
+		EEPROM.commit();
+		EEPROM.end();
+	}
+	else{
+		byte status = 0;
+		status = EEPROM.read(SIGN + 1);
+		EEPROM.write(SIGN + 1, status - 1);
+		EEPROM.commit();
+		EEPROM.end();
+		if (status == 0){ Serial.println("\n Error Code 1"); while (1); }
+	}
+}
 byte addClient(String name, IPAddress clientIP){
 	clientList[(clientCount) % NUM_MAX_CLIENT].name = name;
 	clientList[(clientCount++) % NUM_MAX_CLIENT].ip = clientIP;
 }
 const char* removeName(String &test, String input){
 	if (input.indexOf(SEPARATORbeg) != -1){
-
+		
 		byte start = input.indexOf(SEPARATORbeg), end = input.indexOf(SEPARATORend) + 1;
 		test = input.substring(start, end);
 		if (test.length() > 2){
@@ -95,10 +119,12 @@ void printClientNames(){
 }
 
 void setup(){
-	
+
+
 	Serial.setDebugOutput(true);
 	Serial.begin(115200);
 	printWifiStatus();
+	debuggerInit();
 	Serial.print("Udp server started at port ");
 	Serial.println(SERVER_PORT);
 	Serial.print("begin =");
@@ -112,7 +138,7 @@ void setup(){
 
 void loop(){	
 
-	char inBuffer[32] = {}; //buffer to hold incoming and outgoing packets
+	char inBuffer[128] = {}; //buffer to hold incoming and outgoing packets
 	String outBuffer;
 	int noBytes = Udp.parsePacket();
 	if (noBytes) {
@@ -145,7 +171,7 @@ void loop(){
 	}
 	if (Serial.available()){
 		//parse the serial input to send
-		outBuffer = Serial.readString();
+		outBuffer = Serial.readStringUntil('\n');
 		String outName;
 		outBuffer=removeName(outName, outBuffer);
 		if (getIP(outName) != IPAddress(0, 0, 0, 0)){

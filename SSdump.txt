@@ -1,0 +1,17 @@
+
+byte isClientList(String name){
+	for (byte i = 0; i < NUM_MAX_CLIENT; i++){
+		if (clientList[i].name.equals(name)){
+			return 1;
+		}
+	}
+	return 0;
+}
+byte addClient(String name){
+	clientList[(clientCount++)%NUM_MAX_CLIENT].name = name;
+}
+byte getName(String test, String input){
+	if (input.indexOf(SEPARATOR)){
+	
+	}
+}

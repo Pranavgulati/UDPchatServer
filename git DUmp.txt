@@ -1,0 +1,74 @@
+Windows PowerShell
+Copyright (C) 2015 Microsoft Corporation. All rights reserved.
+
+C:\Users\Pranav\Documents\GitHub> cd C:\Users\Pranav\Documents\Visual Studio 2013\Projects\CM_SS
+Set-Location : A positional parameter cannot be found that accepts argument 'Studio'.
+At line:1 char:1
++ cd C:\Users\Pranav\Documents\Visual Studio 2013\Projects\CM_SS
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [Set-Location], ParameterBindingException
+    + FullyQualifiedErrorId : PositionalParameterNotFound,Microsoft.PowerShell.Commands.SetLocationCommand
+
+C:\Users\Pranav\Documents\GitHub> cd "C:\Users\Pranav\Documents\Visual Studio 2013\Projects\CM_SS"
+C:\Users\Pranav\Documents\Visual Studio 2013\Projects\CM_SS [master +4 ~0 -0 !]> git status
+On branch master
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+        CM_SS/CM_SS.ino
+        CM_SS/__vm/Compile.vmps.xml
+        CM_SS/__vm/Configuration.Debug.vmps.xml
+        SSdump.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+C:\Users\Pranav\Documents\Visual Studio 2013\Projects\CM_SS [master +4 ~0 -0 !]> git log
+commit c566cfeff1047883f120eb07d75f03d72d1b3586
+Author: Pranavgulati <pranavgulati95@yahoo.com>
+Date:   Sun Oct 2 01:20:47 2016 +0530
+
+    Server final
+
+commit 0f49cf12ae882bfe8f74f5f701774508e8ded4cb
+Author: Pranavgulati <pranavgulati95@yahoo.com>
+Date:   Sat Oct 1 20:26:49 2016 +0530
+
+    init
+
+commit 91aa193bab4fef73307c0a3dc623b9fbb1cf3b1c
+Author: Pranavgulati <pranavgulati95@yahoo.com>
+Date:   Sat Oct 1 14:36:42 2016 +0530
+
+    Initial commit to add default .gitIgnore and .gitAttribute files.
+C:\Users\Pranav\Documents\Visual Studio 2013\Projects\CM_SS [master +4 ~0 -0 !]> git add CM_SS.ino
+fatal: pathspec 'CM_SS.ino' did not match any files
+C:\Users\Pranav\Documents\Visual Studio 2013\Projects\CM_SS [master +4 ~0 -0 !]> git add CM_SS/CM_SS.ino
+C:\Users\Pranav\Documents\Visual Studio 2013\Projects\CM_SS [master +1 ~0 -0 | +3 ~0 -0 !]> git commit --amend
+[master eb1c724] Server final
+ Date: Sun Oct 2 01:20:47 2016 +0530
+ 4 files changed, 380 insertions(+)
+ create mode 100644 CM_SS/CM_SS.ino
+ create mode 100644 CM_SS/CM_SS.vcxproj
+ create mode 100644 CM_SS/CM_SS.vcxproj.filters
+ create mode 100644 CM_SS/__vm/.CM_SS.vsarduino.h
+C:\Users\Pranav\Documents\Visual Studio 2013\Projects\CM_SS [master +3 ~0 -0 !]> git status
+On branch master
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+        CM_SS/__vm/Compile.vmps.xml
+        CM_SS/__vm/Configuration.Debug.vmps.xml
+        SSdump.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+C:\Users\Pranav\Documents\Visual Studio 2013\Projects\CM_SS [master +3 ~0 -0 !]> git remote add origin https://github.com/Pranavgulati
+/UDPchatServer.git
+C:\Users\Pranav\Documents\Visual Studio 2013\Projects\CM_SS [master +3 ~0 -0 !]> git push origin master
+Counting objects: 15, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (14/14), done.
+Writing objects: 100% (15/15), 7.54 KiB | 0 bytes/s, done.
+Total 15 (delta 2), reused 0 (delta 0)
+remote: Resolving deltas: 100% (2/2), done.
+To https://github.com/Pranavgulati/UDPchatServer.git
+ * [new branch]      master -> master
+C:\Users\Pranav\Documents\Visual Studio 2013\Projects\CM_SS [master +3 ~0 -0 !]>
