@@ -54,25 +54,6 @@ byte isClientList(String name){
 	}
 	return 0;
 }
-void debuggerInit(){
-	
-	//error checking and self diagnosis code do not alter
-	EEPROM.begin(64);
-	if (EEPROM.read(SIGN) != 0x22){
-		EEPROM.write(SIGN, 0x22);
-		EEPROM.write(SIGN + 1, 40);
-		EEPROM.commit();
-		EEPROM.end();
-	}
-	else{
-		byte status = 0;
-		status = EEPROM.read(SIGN + 1);
-		EEPROM.write(SIGN + 1, status - 1);
-		EEPROM.commit();
-		EEPROM.end();
-		if (status == 0){ Serial.println("\n Error Code 1"); while (1); }
-	}
-}
 byte addClient(String name, IPAddress clientIP){
 	clientList[(clientCount) % NUM_MAX_CLIENT].name = name;
 	clientList[(clientCount++) % NUM_MAX_CLIENT].ip = clientIP;
@@ -124,14 +105,14 @@ void setup(){
 	Serial.setDebugOutput(true);
 	Serial.begin(115200);
 	printWifiStatus();
-	debuggerInit();
+	
 	Serial.print("Udp server started at port ");
 	Serial.println(SERVER_PORT);
 	Serial.print("begin =");
 	Serial.println(Udp.begin(SERVER_PORT));
 
 	WiFi.mode(WIFI_AP);
-	WiFi.softAP(serverSSID, password,11);
+	WiFi.softAP(serverSSID, password);
 	delay(1000);
 
 }
@@ -172,6 +153,7 @@ void loop(){
 	if (Serial.available()){
 		//parse the serial input to send
 		outBuffer = Serial.readStringUntil('\n');
+		Serial.read();//probably removes the '\n' from the stream after reading
 		String outName;
 		outBuffer=removeName(outName, outBuffer);
 		if (getIP(outName) != IPAddress(0, 0, 0, 0)){
